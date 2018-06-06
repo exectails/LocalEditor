@@ -41,6 +41,8 @@
 			this.BtnOpenTranslated = new System.Windows.Forms.ToolStripButton();
 			this.BtnSaveAs = new System.Windows.Forms.ToolStripButton();
 			this.LblSeperator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.BtnSearch = new System.Windows.Forms.ToolStripButton();
+			this.LblSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.BtnEnableTabNextLine = new System.Windows.Forms.ToolStripButton();
 			this.OfdOpen = new System.Windows.Forms.OpenFileDialog();
 			this.SfdSave = new System.Windows.Forms.SaveFileDialog();
@@ -48,8 +50,6 @@
 			this.ColKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.StatusStrip = new System.Windows.Forms.StatusStrip();
 			this.LblTranslatedCount = new System.Windows.Forms.ToolStripStatusLabel();
-			this.BtnSearch = new System.Windows.Forms.ToolStripButton();
-			this.LblSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.ToolStrip.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -184,6 +184,21 @@
 			this.LblSeperator1.Name = "LblSeperator1";
 			this.LblSeperator1.Size = new System.Drawing.Size(6, 25);
 			// 
+			// BtnSearch
+			// 
+			this.BtnSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.BtnSearch.Image = ((System.Drawing.Image)(resources.GetObject("BtnSearch.Image")));
+			this.BtnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.BtnSearch.Name = "BtnSearch";
+			this.BtnSearch.Size = new System.Drawing.Size(23, 22);
+			this.BtnSearch.Text = "Search...";
+			this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
+			// 
+			// LblSeparator2
+			// 
+			this.LblSeparator2.Name = "LblSeparator2";
+			this.LblSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
 			// BtnEnableTabNextLine
 			// 
 			this.BtnEnableTabNextLine.Checked = true;
@@ -244,23 +259,9 @@
 			this.LblTranslatedCount.Name = "LblTranslatedCount";
 			this.LblTranslatedCount.Size = new System.Drawing.Size(0, 17);
 			// 
-			// BtnSearch
-			// 
-			this.BtnSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.BtnSearch.Image = ((System.Drawing.Image)(resources.GetObject("BtnSearch.Image")));
-			this.BtnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.BtnSearch.Name = "BtnSearch";
-			this.BtnSearch.Size = new System.Drawing.Size(23, 22);
-			this.BtnSearch.Text = "Search...";
-			this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
-			// 
-			// LblSeparator2
-			// 
-			this.LblSeparator2.Name = "LblSeparator2";
-			this.LblSeparator2.Size = new System.Drawing.Size(6, 25);
-			// 
 			// FrmMain
 			// 
+			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1019, 671);
@@ -280,6 +281,8 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Local Editor";
 			this.Load += new System.EventHandler(this.Form1_Load);
+			this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FrmMain_DragDrop);
+			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FrmMain_DragEnter);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMain_KeyDown);
 			this.ToolStrip.ResumeLayout(false);
 			this.ToolStrip.PerformLayout();

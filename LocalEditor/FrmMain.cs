@@ -719,5 +719,29 @@ namespace LocalEditor
 			foundItem.Selected = true;
 			foundItem.EnsureVisible();
 		}
+
+		/// <summary>
+		/// Enables drag.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void FrmMain_DragEnter(object sender, DragEventArgs e)
+		{
+			e.Effect = (e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Copy : DragDropEffects.None);
+		}
+
+		/// <summary>
+		/// Opens dragged file.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void FrmMain_DragDrop(object sender, DragEventArgs e)
+		{
+			var filePaths = e.Data.GetData(DataFormats.FileDrop) as string[];
+			if (filePaths.Length == 0)
+				return;
+
+			this.OpenOriginal(filePaths[0]);
+		}
 	}
 }
