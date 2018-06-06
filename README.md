@@ -18,6 +18,11 @@ Controls
 Page Up/Down: Navigate to next/previous line.
 Tab: Nagivate to next translatable element.
 
+Preview
+-----------------------------------------------------------------------------
+
+![](preview.png)
+
 Links
 -----------------------------------------------------------------------------
 
