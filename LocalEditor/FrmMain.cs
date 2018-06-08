@@ -633,7 +633,7 @@ namespace LocalEditor
 			if (result != DialogResult.OK)
 				return;
 
-			using (var fs = new FileStream(this.SfdSave.FileName, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+			using (var fs = new FileStream(this.SfdSave.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
 			using (var sw = new StreamWriter(fs, Encoding.Unicode))
 			{
 				foreach (var key in _lineKeys)
