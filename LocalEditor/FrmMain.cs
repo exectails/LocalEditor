@@ -3,9 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Json;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
@@ -267,7 +271,60 @@ namespace LocalEditor
 			this.TxtOriginalLine.Text = originalValue;
 			this.TxtTranslatedLine.Text = translatedValue;
 			this.TxtTranslateElement.Text = "";
+			this.LoadMachineTranslation();
 			_loading = false;
+		}
+
+		/// <summary>
+		/// Loads machine translation from original text.
+		/// </summary>
+		private async void LoadMachineTranslation()
+		{
+			if (!this.BtnMachineTranslation.Checked)
+				return;
+
+			this.TxtMachineTranslation.Text = "Loading...";
+
+			try
+			{
+				var translated = await this.GetMachineTranslation(this.TxtOriginalLine.Text);
+				this.TxtMachineTranslation.Text = translated;
+			}
+			catch (Exception ex)
+			{
+				this.TxtMachineTranslation.Text = ex.ToString();
+			}
+		}
+
+		/// <summary>
+		/// Downloads and returns translated text.
+		/// </summary>
+		/// <returns></returns>
+		private async Task<string> GetMachineTranslation(string untranslatedText)
+		{
+			string translatedText = null;
+
+			await Task.Run(() =>
+			{
+				using (var wc = new WebClient())
+				{
+					wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 " + "(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
+
+					var text = HttpUtility.UrlEncode(this.TxtOriginalLine.Text);
+					var result = wc.DownloadString("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" + text);
+					var json = JsonValue.Parse(result);
+
+					var sb = new StringBuilder();
+					foreach (JsonValue x in json[0])
+					{
+						sb.Append((string)x[0]);
+					}
+
+					translatedText = sb.ToString();
+				}
+			});
+
+			return translatedText;
 		}
 
 		/// <summary>
@@ -742,6 +799,27 @@ namespace LocalEditor
 				return;
 
 			this.OpenOriginal(filePaths[0]);
+		}
+
+		/// <summary>
+		/// Toggles machine translation.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void BtnToggleMachineTranslation_CheckedChanged(object sender, EventArgs e)
+		{
+			if (this.BtnMachineTranslation.Checked)
+			{
+				this.TxtMachineTranslation.Visible = true;
+				this.LblMachineTranslation.Visible = true;
+				this.TxtTranslatedLine.Width = (this.TxtMachineTranslation.Left - this.TxtTranslatedLine.Left - 7);
+			}
+			else
+			{
+				this.TxtMachineTranslation.Visible = false;
+				this.LblMachineTranslation.Visible = false;
+				this.TxtTranslatedLine.Width = (this.TxtMachineTranslation.Right - this.TxtTranslatedLine.Left);
+			}
 		}
 	}
 }

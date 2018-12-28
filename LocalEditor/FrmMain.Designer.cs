@@ -44,12 +44,15 @@
 			this.BtnSearch = new System.Windows.Forms.ToolStripButton();
 			this.LblSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.BtnEnableTabNextLine = new System.Windows.Forms.ToolStripButton();
+			this.BtnMachineTranslation = new System.Windows.Forms.ToolStripButton();
 			this.OfdOpen = new System.Windows.Forms.OpenFileDialog();
 			this.SfdSave = new System.Windows.Forms.SaveFileDialog();
 			this.LstLines = new System.Windows.Forms.ListView();
 			this.ColKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.StatusStrip = new System.Windows.Forms.StatusStrip();
 			this.LblTranslatedCount = new System.Windows.Forms.ToolStripStatusLabel();
+			this.TxtMachineTranslation = new System.Windows.Forms.TextBox();
+			this.LblMachineTranslation = new System.Windows.Forms.Label();
 			this.ToolStrip.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -64,7 +67,7 @@
 			this.TxtTranslatedLine.Name = "TxtTranslatedLine";
 			this.TxtTranslatedLine.ReadOnly = true;
 			this.TxtTranslatedLine.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.TxtTranslatedLine.Size = new System.Drawing.Size(755, 160);
+			this.TxtTranslatedLine.Size = new System.Drawing.Size(469, 160);
 			this.TxtTranslatedLine.TabIndex = 4;
 			// 
 			// TxtOriginalLine
@@ -141,7 +144,8 @@
             this.LblSeperator1,
             this.BtnSearch,
             this.LblSeparator2,
-            this.BtnEnableTabNextLine});
+            this.BtnEnableTabNextLine,
+            this.BtnMachineTranslation});
 			this.ToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.ToolStrip.Name = "ToolStrip";
 			this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -211,6 +215,19 @@
 			this.BtnEnableTabNextLine.Size = new System.Drawing.Size(23, 22);
 			this.BtnEnableTabNextLine.Text = "Jump to next line after the last element?";
 			// 
+			// BtnToggleMachineTranslation
+			// 
+			this.BtnMachineTranslation.Checked = true;
+			this.BtnMachineTranslation.CheckOnClick = true;
+			this.BtnMachineTranslation.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.BtnMachineTranslation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.BtnMachineTranslation.Image = ((System.Drawing.Image)(resources.GetObject("BtnToggleMachineTranslation.Image")));
+			this.BtnMachineTranslation.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.BtnMachineTranslation.Name = "BtnToggleMachineTranslation";
+			this.BtnMachineTranslation.Size = new System.Drawing.Size(23, 22);
+			this.BtnMachineTranslation.Text = "Show machine translation as hint?";
+			this.BtnMachineTranslation.CheckedChanged += new System.EventHandler(this.BtnToggleMachineTranslation_CheckedChanged);
+			// 
 			// OfdOpen
 			// 
 			this.OfdOpen.Filter = "Text Files|*.txt";
@@ -259,12 +276,35 @@
 			this.LblTranslatedCount.Name = "LblTranslatedCount";
 			this.LblTranslatedCount.Size = new System.Drawing.Size(0, 17);
 			// 
+			// TxtMachineTranslation
+			// 
+			this.TxtMachineTranslation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.TxtMachineTranslation.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.TxtMachineTranslation.Location = new System.Drawing.Point(727, 228);
+			this.TxtMachineTranslation.Multiline = true;
+			this.TxtMachineTranslation.Name = "TxtMachineTranslation";
+			this.TxtMachineTranslation.ReadOnly = true;
+			this.TxtMachineTranslation.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.TxtMachineTranslation.Size = new System.Drawing.Size(280, 160);
+			this.TxtMachineTranslation.TabIndex = 11;
+			// 
+			// LblMachineTranslation
+			// 
+			this.LblMachineTranslation.AutoSize = true;
+			this.LblMachineTranslation.Location = new System.Drawing.Point(727, 212);
+			this.LblMachineTranslation.Name = "LblMachineTranslation";
+			this.LblMachineTranslation.Size = new System.Drawing.Size(26, 13);
+			this.LblMachineTranslation.TabIndex = 12;
+			this.LblMachineTranslation.Text = "Hint";
+			// 
 			// FrmMain
 			// 
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1019, 671);
+			this.Controls.Add(this.LblMachineTranslation);
+			this.Controls.Add(this.TxtMachineTranslation);
 			this.Controls.Add(this.StatusStrip);
 			this.Controls.Add(this.LstLines);
 			this.Controls.Add(this.ToolStrip);
@@ -315,6 +355,9 @@
 		private System.Windows.Forms.ToolStripButton BtnEnableTabNextLine;
 		private System.Windows.Forms.ToolStripButton BtnSearch;
 		private System.Windows.Forms.ToolStripSeparator LblSeparator2;
+		private System.Windows.Forms.TextBox TxtMachineTranslation;
+		private System.Windows.Forms.Label LblMachineTranslation;
+		private System.Windows.Forms.ToolStripButton BtnMachineTranslation;
 	}
 }
 
