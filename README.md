@@ -15,8 +15,8 @@ extensively tested yet.
 Controls
 -----------------------------------------------------------------------------
 
-Page Up/Down: Navigate to next/previous line.
-Tab: Nagivate to next translatable element.
+- Page Up/Down: Navigate to next/previous line.
+- Tab: Nagivate to next translatable element.
 
 Preview
 -----------------------------------------------------------------------------
