@@ -215,15 +215,15 @@
 			this.BtnEnableTabNextLine.Size = new System.Drawing.Size(23, 22);
 			this.BtnEnableTabNextLine.Text = "Jump to next line after the last element?";
 			// 
-			// BtnToggleMachineTranslation
+			// BtnMachineTranslation
 			// 
 			this.BtnMachineTranslation.Checked = true;
 			this.BtnMachineTranslation.CheckOnClick = true;
 			this.BtnMachineTranslation.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.BtnMachineTranslation.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.BtnMachineTranslation.Image = ((System.Drawing.Image)(resources.GetObject("BtnToggleMachineTranslation.Image")));
+			this.BtnMachineTranslation.Image = ((System.Drawing.Image)(resources.GetObject("BtnMachineTranslation.Image")));
 			this.BtnMachineTranslation.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.BtnMachineTranslation.Name = "BtnToggleMachineTranslation";
+			this.BtnMachineTranslation.Name = "BtnMachineTranslation";
 			this.BtnMachineTranslation.Size = new System.Drawing.Size(23, 22);
 			this.BtnMachineTranslation.Text = "Show machine translation as hint?";
 			this.BtnMachineTranslation.CheckedChanged += new System.EventHandler(this.BtnToggleMachineTranslation_CheckedChanged);
@@ -316,6 +316,7 @@
 			this.Controls.Add(this.TxtOriginalLine);
 			this.Controls.Add(this.TxtTranslatedLine);
 			this.DoubleBuffered = true;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
 			this.Name = "FrmMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
