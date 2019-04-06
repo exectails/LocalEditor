@@ -53,6 +53,8 @@
 			this.LblTranslatedCount = new System.Windows.Forms.ToolStripStatusLabel();
 			this.TxtMachineTranslation = new System.Windows.Forms.TextBox();
 			this.LblMachineTranslation = new System.Windows.Forms.Label();
+			this.LblSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.LblAbout = new System.Windows.Forms.ToolStripButton();
 			this.ToolStrip.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -145,7 +147,9 @@
             this.BtnSearch,
             this.LblSeparator2,
             this.BtnEnableTabNextLine,
-            this.BtnMachineTranslation});
+            this.BtnMachineTranslation,
+            this.LblSeparator3,
+            this.LblAbout});
 			this.ToolStrip.Location = new System.Drawing.Point(0, 0);
 			this.ToolStrip.Name = "ToolStrip";
 			this.ToolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
@@ -297,6 +301,21 @@
 			this.LblMachineTranslation.TabIndex = 12;
 			this.LblMachineTranslation.Text = "Hint";
 			// 
+			// LblSeparator3
+			// 
+			this.LblSeparator3.Name = "LblSeparator3";
+			this.LblSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// LblAbout
+			// 
+			this.LblAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LblAbout.Image = ((System.Drawing.Image)(resources.GetObject("LblAbout.Image")));
+			this.LblAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LblAbout.Name = "LblAbout";
+			this.LblAbout.Size = new System.Drawing.Size(23, 22);
+			this.LblAbout.Text = "About";
+			this.LblAbout.Click += new System.EventHandler(this.LblAbout_Click);
+			// 
 			// FrmMain
 			// 
 			this.AllowDrop = true;
@@ -359,6 +378,8 @@
 		private System.Windows.Forms.TextBox TxtMachineTranslation;
 		private System.Windows.Forms.Label LblMachineTranslation;
 		private System.Windows.Forms.ToolStripButton BtnMachineTranslation;
+		private System.Windows.Forms.ToolStripSeparator LblSeparator3;
+		private System.Windows.Forms.ToolStripButton LblAbout;
 	}
 }
 

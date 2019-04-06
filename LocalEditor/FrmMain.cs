@@ -821,5 +821,15 @@ namespace LocalEditor
 				this.TxtTranslatedLine.Width = (this.TxtMachineTranslation.Right - this.TxtTranslatedLine.Left);
 			}
 		}
+
+		/// <summary>
+		/// Called when the About button is clicked, opens About window.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void LblAbout_Click(object sender, EventArgs e)
+		{
+			new FrmAbout().ShowDialog(this);
+		}
 	}
 }
