@@ -45,6 +45,9 @@
 			this.LblSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.BtnEnableTabNextLine = new System.Windows.Forms.ToolStripButton();
 			this.BtnMachineTranslation = new System.Windows.Forms.ToolStripButton();
+			this.CboMachine = new System.Windows.Forms.ToolStripComboBox();
+			this.LblSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.LblAbout = new System.Windows.Forms.ToolStripButton();
 			this.OfdOpen = new System.Windows.Forms.OpenFileDialog();
 			this.SfdSave = new System.Windows.Forms.SaveFileDialog();
 			this.LstLines = new System.Windows.Forms.ListView();
@@ -53,8 +56,6 @@
 			this.LblTranslatedCount = new System.Windows.Forms.ToolStripStatusLabel();
 			this.TxtMachineTranslation = new System.Windows.Forms.TextBox();
 			this.LblMachineTranslation = new System.Windows.Forms.Label();
-			this.LblSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.LblAbout = new System.Windows.Forms.ToolStripButton();
 			this.ToolStrip.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -148,6 +149,7 @@
             this.LblSeparator2,
             this.BtnEnableTabNextLine,
             this.BtnMachineTranslation,
+            this.CboMachine,
             this.LblSeparator3,
             this.LblAbout});
 			this.ToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -232,6 +234,32 @@
 			this.BtnMachineTranslation.Text = "Show machine translation as hint?";
 			this.BtnMachineTranslation.CheckedChanged += new System.EventHandler(this.BtnToggleMachineTranslation_CheckedChanged);
 			// 
+			// CboMachine
+			// 
+			this.CboMachine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.CboMachine.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.CboMachine.Items.AddRange(new object[] {
+            "Google",
+            "Baidu"});
+			this.CboMachine.Name = "CboMachine";
+			this.CboMachine.Size = new System.Drawing.Size(121, 25);
+			this.CboMachine.ToolTipText = "Machine Translation API";
+			// 
+			// LblSeparator3
+			// 
+			this.LblSeparator3.Name = "LblSeparator3";
+			this.LblSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
+			// LblAbout
+			// 
+			this.LblAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.LblAbout.Image = ((System.Drawing.Image)(resources.GetObject("LblAbout.Image")));
+			this.LblAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.LblAbout.Name = "LblAbout";
+			this.LblAbout.Size = new System.Drawing.Size(23, 22);
+			this.LblAbout.Text = "About";
+			this.LblAbout.Click += new System.EventHandler(this.LblAbout_Click);
+			// 
 			// OfdOpen
 			// 
 			this.OfdOpen.Filter = "Text Files|*.txt";
@@ -301,21 +329,6 @@
 			this.LblMachineTranslation.TabIndex = 12;
 			this.LblMachineTranslation.Text = "Hint";
 			// 
-			// LblSeparator3
-			// 
-			this.LblSeparator3.Name = "LblSeparator3";
-			this.LblSeparator3.Size = new System.Drawing.Size(6, 25);
-			// 
-			// LblAbout
-			// 
-			this.LblAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.LblAbout.Image = ((System.Drawing.Image)(resources.GetObject("LblAbout.Image")));
-			this.LblAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.LblAbout.Name = "LblAbout";
-			this.LblAbout.Size = new System.Drawing.Size(23, 22);
-			this.LblAbout.Text = "About";
-			this.LblAbout.Click += new System.EventHandler(this.LblAbout_Click);
-			// 
 			// FrmMain
 			// 
 			this.AllowDrop = true;
@@ -380,6 +393,7 @@
 		private System.Windows.Forms.ToolStripButton BtnMachineTranslation;
 		private System.Windows.Forms.ToolStripSeparator LblSeparator3;
 		private System.Windows.Forms.ToolStripButton LblAbout;
+		private System.Windows.Forms.ToolStripComboBox CboMachine;
 	}
 }
 

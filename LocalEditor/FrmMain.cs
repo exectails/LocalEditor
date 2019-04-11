@@ -6,6 +6,7 @@ using System.IO;
 using System.Json;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -36,6 +37,8 @@ namespace LocalEditor
 		private List<TranslatableElement> _translatableElements = new List<TranslatableElement>();
 		private ListViewItem _selectedListViewItem;
 		private string _searchText;
+		private Dictionary<string, string> _machineCache = new Dictionary<string, string>();
+		private MD5 _md5 = MD5.Create();
 
 		/// <summary>
 		/// Creates new instance.
@@ -53,6 +56,7 @@ namespace LocalEditor
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			this.ToolStrip.Renderer = new ToolStripRendererNL();
+			this.CboMachine.SelectedIndex = 0;
 
 			var args = Environment.GetCommandLineArgs();
 			if (args.Length > 1)
@@ -287,13 +291,41 @@ namespace LocalEditor
 
 			try
 			{
-				var translated = await this.GetMachineTranslation(this.TxtOriginalLine.Text);
+				var untranslated = this.TxtOriginalLine.Text;
+				var translated = await this.GetMachineTranslation(untranslated);
 				this.TxtMachineTranslation.Text = translated;
+			}
+			catch (WebException ex)
+			{
+				if (ex.Message.Contains("429"))
+					this.TxtMachineTranslation.Text = "(Unable to load machine translation, limit reached.)";
+				else
+					this.TxtMachineTranslation.Text = "(Unable to load machine translation.)";
 			}
 			catch (Exception ex)
 			{
 				this.TxtMachineTranslation.Text = ex.ToString();
 			}
+		}
+
+		/// <summary>
+		/// Returns an MD5 hash string for the string.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		private string GetMd5HashString(string str)
+		{
+			if (string.IsNullOrWhiteSpace(str))
+				return "";
+
+			var bytes = Encoding.UTF8.GetBytes(str);
+			var hash = _md5.ComputeHash(bytes);
+
+			var hashStr = new StringBuilder();
+			for (int i = 0; i < hash.Length; i++)
+				hashStr.Append(hash[i].ToString("x2"));
+
+			return hashStr.ToString();
 		}
 
 		/// <summary>
@@ -304,25 +336,64 @@ namespace LocalEditor
 		{
 			string translatedText = null;
 
+			lock (_machineCache)
+			{
+				if (_machineCache.TryGetValue(untranslatedText, out translatedText))
+					return translatedText;
+			}
+
+			var selectedApi = this.CboMachine.SelectedIndex;
+
 			await Task.Run(() =>
 			{
 				using (var wc = new WebClient())
 				{
 					wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 " + "(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
 
-					var text = HttpUtility.UrlEncode(this.TxtOriginalLine.Text);
-					var result = wc.DownloadString("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" + text);
-					var json = JsonValue.Parse(result);
-
-					var sb = new StringBuilder();
-					foreach (JsonValue x in json[0])
+					// Google
+					if (selectedApi == 0)
 					{
-						sb.Append((string)x[0]);
-					}
+						var text = HttpUtility.UrlEncode(this.TxtOriginalLine.Text);
+						var result = wc.DownloadString("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" + text);
+						var json = JsonValue.Parse(result);
 
-					translatedText = sb.ToString();
+						var sb = new StringBuilder();
+						foreach (JsonValue x in json[0])
+						{
+							sb.Append((string)x[0]);
+						}
+
+						translatedText = sb.ToString();
+					}
+					// Baidu
+					if (selectedApi == 1)
+					{
+						// Information taken from a public repo,
+						// will presumably quickly reach limits as well.
+						// https://github.com/qianngchn/Desktop-Translator
+
+						var password = "9X1ZaQseky2TeId7RhDx";
+						var salt = DateTime.Now.Millisecond.ToString();
+						var appid = "20170816000074142";
+						var sign = GetMd5HashString(appid + untranslatedText + salt + password);
+						var url = string.Format("http://api.fanyi.baidu.com/api/trans/vip/translate?q={0}&from={1}&to={2}&appid={3}&salt={4}&sign={5}", HttpUtility.UrlEncode(this.TxtOriginalLine.Text), "auto", "en", appid, salt, sign);
+						var result = wc.DownloadString(url);
+						var json = (JsonObject)JsonValue.Parse(result);
+
+						if (!json.TryGetValue("trans_result", out var transResult))
+							throw new WebException("Baidu result property not found.");
+
+						translatedText = transResult[0]["dst"];
+					}
+					else
+					{
+						throw new InvalidDataException("Unknown translation API.");
+					}
 				}
 			});
+
+			lock (_machineCache)
+				_machineCache[untranslatedText] = translatedText;
 
 			return translatedText;
 		}
