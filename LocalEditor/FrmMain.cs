@@ -395,7 +395,7 @@ namespace LocalEditor
 
 						translatedText = sb.ToString();
 					}
-					if (selectedApi == 1)
+					else if (selectedApi == "Baidu")
 					{
 						// Information taken from a public repo,
 						// will presumably quickly reach limits as well.
