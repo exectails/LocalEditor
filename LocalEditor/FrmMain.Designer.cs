@@ -46,6 +46,7 @@
 			this.BtnEnableTabNextLine = new System.Windows.Forms.ToolStripButton();
 			this.BtnMachineTranslation = new System.Windows.Forms.ToolStripButton();
 			this.CboMachine = new System.Windows.Forms.ToolStripComboBox();
+			this.CboMachineLanguage = new System.Windows.Forms.ToolStripComboBox();
 			this.LblSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.LblAbout = new System.Windows.Forms.ToolStripButton();
 			this.OfdOpen = new System.Windows.Forms.OpenFileDialog();
@@ -150,6 +151,7 @@
             this.BtnEnableTabNextLine,
             this.BtnMachineTranslation,
             this.CboMachine,
+            this.CboMachineLanguage,
             this.LblSeparator3,
             this.LblAbout});
 			this.ToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -244,6 +246,18 @@
 			this.CboMachine.Name = "CboMachine";
 			this.CboMachine.Size = new System.Drawing.Size(121, 25);
 			this.CboMachine.ToolTipText = "Machine Translation API";
+			// 
+			// CboMachineLanguage
+			// 
+			this.CboMachineLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.CboMachineLanguage.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.CboMachineLanguage.Items.AddRange(new object[] {
+            "English",
+            "Chinese",
+            "Korean",
+            "Japanese"});
+			this.CboMachineLanguage.Name = "CboMachineLanguage";
+			this.CboMachineLanguage.Size = new System.Drawing.Size(121, 25);
 			// 
 			// LblSeparator3
 			// 
@@ -394,6 +408,7 @@
 		private System.Windows.Forms.ToolStripSeparator LblSeparator3;
 		private System.Windows.Forms.ToolStripButton LblAbout;
 		private System.Windows.Forms.ToolStripComboBox CboMachine;
+		private System.Windows.Forms.ToolStripComboBox CboMachineLanguage;
 	}
 }
 

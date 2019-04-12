@@ -57,6 +57,7 @@ namespace LocalEditor
 		{
 			this.ToolStrip.Renderer = new ToolStripRendererNL();
 			this.CboMachine.SelectedIndex = 0;
+			this.CboMachineLanguage.SelectedIndex = 0;
 
 			var args = Environment.GetCommandLineArgs();
 			if (args.Length > 1)
@@ -334,38 +335,66 @@ namespace LocalEditor
 		/// <returns></returns>
 		private async Task<string> GetMachineTranslation(string untranslatedText)
 		{
+			var selectedApi = (string)this.CboMachine.SelectedItem;
+			var selectedTargetLanguage = (string)this.CboMachineLanguage.SelectedItem;
+
+			var targetLanguage = "en";
+			switch (selectedTargetLanguage)
+			{
+				case "Korean":
+					if (selectedApi == "Google")
+						targetLanguage = "ko";
+					else
+						targetLanguage = "kor";
+					break;
+
+				case "Chinese":
+					if (selectedApi == "Google")
+						targetLanguage = "zh-CN";
+					else
+						targetLanguage = "zh";
+					break;
+
+				case "Japanese":
+					if (selectedApi == "Google")
+						targetLanguage = "ja";
+					else
+						targetLanguage = "jp";
+					break;
+			}
+
 			string translatedText = null;
+			var translationKey = targetLanguage + " ::::: " + untranslatedText;
 
 			lock (_machineCache)
 			{
-				if (_machineCache.TryGetValue(untranslatedText, out translatedText))
+				if (_machineCache.TryGetValue(translationKey, out translatedText))
 					return translatedText;
 			}
-
-			var selectedApi = this.CboMachine.SelectedIndex;
 
 			await Task.Run(() =>
 			{
 				using (var wc = new WebClient())
 				{
 					wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 " + "(KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
+					wc.Encoding = Encoding.UTF8;
 
-					// Google
-					if (selectedApi == 0)
+					if (selectedApi == "Google")
 					{
 						var text = HttpUtility.UrlEncode(this.TxtOriginalLine.Text);
-						var result = wc.DownloadString("https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=" + text);
+						var url = string.Format(string.Format("https://translate.googleapis.com/translate_a/single?client=gtx&sl={1}&tl={2}&dt=t&q={0}", text, "auto", targetLanguage));
+						var result = wc.DownloadString(url);
 						var json = JsonValue.Parse(result);
 
 						var sb = new StringBuilder();
 						foreach (JsonValue x in json[0])
 						{
-							sb.Append((string)x[0]);
+							var str = (string)x[0];
+							sb.Append(str);
 						}
 
 						translatedText = sb.ToString();
 					}
-					// Baidu
 					if (selectedApi == 1)
 					{
 						// Information taken from a public repo,
@@ -376,10 +405,14 @@ namespace LocalEditor
 						var salt = DateTime.Now.Millisecond.ToString();
 						var appid = "20170816000074142";
 						var sign = GetMd5HashString(appid + untranslatedText + salt + password);
-						var url = string.Format("http://api.fanyi.baidu.com/api/trans/vip/translate?q={0}&from={1}&to={2}&appid={3}&salt={4}&sign={5}", HttpUtility.UrlEncode(this.TxtOriginalLine.Text), "auto", "en", appid, salt, sign);
-						var result = wc.DownloadString(url);
-						var json = (JsonObject)JsonValue.Parse(result);
+						var text = HttpUtility.UrlEncode(this.TxtOriginalLine.Text);
+						var url = string.Format("http://api.fanyi.baidu.com/api/trans/vip/translate?q={0}&from={1}&to={2}&appid={3}&salt={4}&sign={5}", text, "auto", targetLanguage, appid, salt, sign);
 
+						var result = wc.DownloadString(url);
+						if (result.Contains("Please recharge"))
+							throw new WebException("(429) Too many requests");
+
+						var json = (JsonObject)JsonValue.Parse(result);
 						if (!json.TryGetValue("trans_result", out var transResult))
 							throw new WebException("Baidu result property not found.");
 
@@ -393,7 +426,7 @@ namespace LocalEditor
 			});
 
 			lock (_machineCache)
-				_machineCache[untranslatedText] = translatedText;
+				_machineCache[translationKey] = translatedText;
 
 			return translatedText;
 		}
