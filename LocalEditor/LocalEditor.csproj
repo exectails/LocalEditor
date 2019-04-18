@@ -54,6 +54,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="YandexTranslateCSharpSdk">
+      <HintPath>..\packages\YandexTranslateCSharpSdk.1.1.0\YandexTranslateCSharpSdk.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Element.cs" />

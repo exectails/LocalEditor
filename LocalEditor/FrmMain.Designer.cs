@@ -242,7 +242,8 @@
 			this.CboMachine.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.CboMachine.Items.AddRange(new object[] {
             "Google",
-            "Baidu"});
+            "Baidu",
+            "Yandex"});
 			this.CboMachine.Name = "CboMachine";
 			this.CboMachine.Size = new System.Drawing.Size(121, 25);
 			this.CboMachine.ToolTipText = "Machine Translation API";

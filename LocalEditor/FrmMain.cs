@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using YandexTranslateCSharpSdk;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace LocalEditor
@@ -303,6 +304,10 @@ namespace LocalEditor
 				else
 					this.TxtMachineTranslation.Text = "(Unable to load machine translation.)";
 			}
+			catch (YandexTranslateException)
+			{
+				this.TxtMachineTranslation.Text = "(Unable to load machine translation.)";
+			}
 			catch (Exception ex)
 			{
 				this.TxtMachineTranslation.Text = ex.ToString();
@@ -342,25 +347,38 @@ namespace LocalEditor
 			switch (selectedTargetLanguage)
 			{
 				case "Korean":
-					if (selectedApi == "Google")
-						targetLanguage = "ko";
-					else
-						targetLanguage = "kor";
+				{
+					switch (selectedApi)
+					{
+						default:
+						case "Google": targetLanguage = "ko"; break;
+						case "Baidu": targetLanguage = "kor"; break;
+						case "Yandex": targetLanguage = "ko"; break;
+					}
 					break;
-
+				}
 				case "Chinese":
-					if (selectedApi == "Google")
-						targetLanguage = "zh-CN";
-					else
-						targetLanguage = "zh";
+				{
+					switch (selectedApi)
+					{
+						default:
+						case "Google": targetLanguage = "zh-CN"; break;
+						case "Baidu": targetLanguage = "zh"; break;
+						case "Yandex": targetLanguage = "zh"; break;
+					}
 					break;
-
+				}
 				case "Japanese":
-					if (selectedApi == "Google")
-						targetLanguage = "ja";
-					else
-						targetLanguage = "jp";
+				{
+					switch (selectedApi)
+					{
+						default:
+						case "Google": targetLanguage = "ja"; break;
+						case "Baidu": targetLanguage = "jp"; break;
+						case "Yandex": targetLanguage = "ja"; break;
+					}
 					break;
+				}
 			}
 
 			string translatedText = null;
@@ -417,6 +435,12 @@ namespace LocalEditor
 							throw new WebException("Baidu result property not found.");
 
 						translatedText = transResult[0]["dst"];
+					}
+					else if (selectedApi == "Yandex")
+					{
+						var wrapper = new YandexTranslateSdk();
+						wrapper.ApiKey = "trnsl.1.1.20190418T085102Z.a126d39de35eb97f.bf9fd00337c90d72172e0f4cd49cc46bb201e96a";
+						translatedText = wrapper.TranslateText(this.TxtOriginalLine.Text, targetLanguage).GetAwaiter().GetResult();
 					}
 					else
 					{
